@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-3.4.1.min.js"></script>
+    <title></title>
+</head>
+<body>
+    <input type="text" id="searchID"/>
+    <button  id="searchContactButton">Get Contact</button>
+
+    <h3>Add a contact</h3>
+    <label id="firstNameLabel">First Name: </label>
+    <input type="text" id="firstName" />
+
+    <label id="lastNameLabel">Last Name: </label>
+    <input type="text" id="lastName" />
+
+    <button id="addContactButton">Add Contact</button>
+
+
+    <script>
+        $(document).ready(function () {
+
+            // Display all contacts
+            $.getJSON("api/Contact", function (result) {
+                console.log(result)
+            })
+
+            // Get the contact by ID
+            document.getElementById('searchContactButton').addEventListener('click', function () {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: 'api/Contact/' + $('#searchID').val(),
+                    success: function (result) {
+                        console.log(result);
+                    }
+                })
+            })
+
+            // Add a contact to the contact array
+            document.getElementById('addContactButton').addEventListener('click', function () {
+
+                // Get the first and last name 
+                var newFirstName = $('#firstName').val();
+                var newLastName = $('#lastName').val();
+                console.log(newFirstName);
+                console.log(newLastName);
+
+                var newContact = {
+                    'ContactID': 0,
+                    'FirstName': newFirstName,
+                    'LastName': newLastName   
+                }
+                console.log(newContact);
+
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: 'api/Contact/',
+                    data: newContact,
+                    success: function (result) {
+                        console.log(result);
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>
