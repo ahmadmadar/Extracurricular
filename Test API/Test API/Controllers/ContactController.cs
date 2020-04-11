@@ -49,8 +49,16 @@ namespace Test_API.Controllers
         }
 
         // PUT: api/Contact/5
-        public void Put(int id, [FromBody]string value)
+        public IEnumerable<Contacts> Put(int id, [FromBody]Contacts changedContact)
         {
+            Contacts contact = contacts.FirstOrDefault(c => c.ContactID == id);
+
+            if (contact != null)
+            {
+                contact.FirstName = changedContact.FirstName;
+                contact.LastName = changedContact.LastName;
+            }
+            return contacts;
         }
 
         // DELETE: api/Contact/5
